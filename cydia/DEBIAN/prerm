@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cp /System/Library/LaunchDaemons/com.apple.securityd.plist.bak /System/Library/LaunchDaemons/com.apple.securityd.plist
+launchctl unload /System/Library/LaunchDaemons/com.apple.securityd.plist
+launchctl load /System/Library/LaunchDaemons/com.apple.securityd.plist
+

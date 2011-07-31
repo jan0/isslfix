@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cp /System/Library/LaunchDaemons/com.apple.securityd.plist /System/Library/LaunchDaemons/com.apple.securityd.plist.bak
+cp /System/Library/LaunchDaemons/com.apple.securityd.sslfix.plist.txt /System/Library/LaunchDaemons/com.apple.securityd.plist
+launchctl unload /System/Library/LaunchDaemons/com.apple.securityd.plist
+launchctl load /System/Library/LaunchDaemons/com.apple.securityd.plist
+

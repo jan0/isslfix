@@ -1,0 +1,9 @@
+Package: isslfix
+Name: isslfix
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Homebrew CVE-2011-0228 fix for iOS < 4.3.5
+Author: jan0
+Maintainer: jan0
+Homepage: https://github.com/jan0/isslfix
+Section: Security
