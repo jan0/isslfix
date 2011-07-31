@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <syslog.h>
 #include <CoreFoundation/CoreFoundation.h>
 
 /**
@@ -28,19 +29,22 @@ CFArrayRef SecCertificateDataArrayCopyArray(CFArrayRef);
 
 CFMutableSetRef suspiciousCerts = NULL;
 
+
 void __attribute__((constructor)) init(){
 	suspiciousCerts = CFSetCreateMutable(kCFAllocatorDefault, 0, &kCFTypeSetCallBacks);
 }
 
 bool mySecCertificateIsValid(SecCertificateRefP certificate, CFAbsoluteTime verifyTime)
 {
-	if(CFSetContainsValue(suspiciousCerts, certificate))
+	if(suspiciousCerts != NULL && CFSetContainsValue(suspiciousCerts, certificate))
 	{
 		return 0; //hax
 	}
 	return SecCertificateIsValid(certificate, verifyTime);
 }
 
+char buf1[256]={0};
+char buf2[256]={0};
 /**
 called by SecTrustServerEvaluateAsync to copy the certificate chain and the anchors
 anchors are trusted certificates provided by the caller (if any), we should not care about them but heh
@@ -66,13 +70,19 @@ CFArrayRef mySecCertificateDataArrayCopyArray(CFArrayRef dataarray)
 				if(!CFSetContainsValue(suspiciousCerts, cert))
 				{
 					CFSetAddValue(suspiciousCerts, cert);
-					fprintf(stderr, "SSLFix rejecting certificate\n");
 					CFStringRef desc = SecCertificateCopySubjectSummary(cert);
+					CFStringRef desc_leaf = SecCertificateCopySubjectSummary(CFArrayGetValueAtIndex(res,0));
 					if(desc != NULL)
 					{
-						CFShow(desc);
+						CFStringGetCString(desc, buf1, 255, kCFStringEncodingASCII);
 						CFRelease(desc);
 					}
+					if(desc_leaf != NULL)
+					{
+						CFStringGetCString(desc_leaf, buf2, 255, kCFStringEncodingASCII);
+						CFRelease(desc_leaf);
+					}
+					syslog(LOG_WARNING, "iSSLFix: Certificate <%s> in chain starting at <%s> has isCA=0 => possible MITM attempt, making validation fail", buf1, buf2);
 				}
 			}
 		}
