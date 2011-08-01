@@ -1,7 +1,17 @@
 CC=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/arm-apple-darwin10-gcc-4.2.1
-CFLAGS=-Wall -framework CoreFoundation -framework Security -dynamiclib -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/ -fPIE
+CFLAGS=-Wall -framework CoreFoundation -framework Security -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/ 
+
+all: isslfix.dylib extrainst_ prerm
 
 isslfix.dylib: isslfix.c
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -dynamiclib -o $@ $^
+	ldid -S $@
+
+extrainst_: extrainst_.m
+	$(CC) $(CFLAGS) -framework Foundation -o $@ $^
+	ldid -S $@
+
+prerm: prerm.m
+	$(CC) $(CFLAGS) -framework Foundation -o $@ $^
 	ldid -S $@
 
