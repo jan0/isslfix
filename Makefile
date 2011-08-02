@@ -15,3 +15,6 @@ prerm: prerm.m
 	$(CC) $(CFLAGS) -framework Foundation -o $@ $^
 	ldid -S $@
 
+clean:
+	rm isslfix.dylib extrainst_ prerm
+
