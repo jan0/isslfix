@@ -3,6 +3,10 @@
 #include <string.h>
 #include <stdint.h>
 
+/**
+http://svn.saurik.com/repos/menes/trunk/mobilesubstrate/extrainst_.m
+**/
+
 void SavePropertyList(CFPropertyListRef plist, char *path, CFURLRef url, CFPropertyListFormat format) {
     if (path[0] != '\0')
         url = CFURLCreateFromFileSystemRepresentation(kCFAllocatorDefault, (uint8_t *) path, strlen(path), false);
@@ -57,8 +61,19 @@ int main(int argc, char *argv[]) {
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
+    const char *finish = NULL;
     if (HookEnvironment(securityd_plist))
-        system("launchctl unload "securityd_plist"; launchctl load "securityd_plist"");
+    {
+        finish = "reboot";
+    }
+
+    const char *cydia = getenv("CYDIA");
+    if (cydia != NULL && finish != NULL) {
+        int fd = [[[[NSString stringWithUTF8String:cydia] componentsSeparatedByString:@" "] objectAtIndex:0] intValue];
+        FILE *fout = fdopen(fd, "w");
+        fprintf(fout, "finish:%s\n", finish);
+        fclose(fout);
+    }
 
     [pool release];
     return 0;
