@@ -27,7 +27,10 @@ References
 ==========
 
 http://support.apple.com/kb/HT4824
+
 http://blog.recurity-labs.com/archives/2011/07/26/cve-2011-0228_ios_certificate_chain_validation_issue_in_handling_of_x_509_certificates/
+
 http://blog.spiderlabs.com/2011/07/twsl2011-007-ios-ssl-implementation-does-not-validate-certificate-chain.html
+
 http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-0228
 
