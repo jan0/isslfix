@@ -1,6 +1,8 @@
 iOS < 4.3.5 fix for SSL vulnerability (CVE-2011-0228)
 =====================================================
 
+**Warning : backup your device before installing in case something goes wrong …**
+
 Deb package : https://github.com/downloads/jan0/isslfix/isslfix-test3.deb
 
 ```
@@ -19,9 +21,9 @@ You should see the "Cannot Verify Server Identity" popup, and this message in sy
 <Warning>: iSSLFix: Certificate <1BDC0A9E-7FC6-4BA4-A9E5-41F206B82D81> in chain starting at <issl.recurity.com> has isCA=0 => possible MITM attempt, making validation fail
 ```
 
-Because securityd is restarted, existing processes and daemons will lose their "connexion" to it and most calls to the Security framework (Keychain, cert validation, etc) will fail. These issues should disappear after a device reboot.
+Because securityd is restarted, existing processes and daemons will lose their "connexion" to it and most calls to the Security framework (Keychain, cert validation, etc) will fail : iTunes wont be able to connect to the device, apps will be unable to access the keychain, etc. These issues should disappear after a device reboot.
 
-If for some reason securityd crashes, do not reboot and remove the package (dpkg -r isslfix).
+**If securityd crashed (check /Library/Logs/CrashReporter/), remove the package (dpkg -r isslfix) before rebooting.**
 
 References
 ==========
