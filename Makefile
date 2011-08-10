@@ -3,7 +3,7 @@ CFLAGS=-Wall -framework CoreFoundation -framework Security -isysroot /Developer/
 
 all: isslfix.dylib extrainst_ prerm
 
-isslfix.dylib: isslfix.c
+isslfix.dylib: isslfix.c blacklist.c
 	$(CC) $(CFLAGS) -dynamiclib -o $@ $^
 	ldid -S $@
 

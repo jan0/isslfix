@@ -25,6 +25,12 @@ Because securityd is restarted, existing processes and daemons will lose their "
 
 **If securityd crashed (check /Library/Logs/CrashReporter/), remove the package (dpkg -r isslfix) before rebooting.**
 
+Comodo stolen certificates blacklist
+====================================
+
+For devices with older firmwares, the blacklist added in iOS 4.3.2 is replicated (see blacklist.c).
+
+
 References
 ==========
 
@@ -35,4 +41,14 @@ http://blog.recurity-labs.com/archives/2011/07/26/cve-2011-0228_ios_certificate_
 http://blog.spiderlabs.com/2011/07/twsl2011-007-ios-ssl-implementation-does-not-validate-certificate-chain.html
 
 http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-0228
+
+https://github.com/hubert3/iSniff
+
+http://support.apple.com/kb/HT4606
+
+http://www.comodo.com/Comodo-Fraud-Incident-2011-03-23.html
+
+https://bugzilla.mozilla.org/show_bug.cgi?id=643056
+
+http://hg.mozilla.org/mozilla-central/rev/f6215eef2276
 

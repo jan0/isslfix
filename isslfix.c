@@ -29,6 +29,9 @@ CFArrayRef SecCertificateDataArrayCopyArray(CFArrayRef);
 
 CFMutableSetRef suspiciousCerts = NULL;
 
+//this symbol was introduced in iOS 4.3.2
+__attribute__((weak_import)) extern void* kSecPolicyCheckBlackListedLeaf;
+
 
 void __attribute__((constructor)) init(){
 	suspiciousCerts = CFSetCreateMutable(kCFAllocatorDefault, 0, &kCFTypeSetCallBacks);
@@ -40,6 +43,11 @@ bool mySecCertificateIsValid(SecCertificateRefP certificate, CFAbsoluteTime veri
 	{
 		return 0; //hax
 	}
+    //if < 4.3.2 then do our own check for Comodo certs
+    if(&kSecPolicyCheckBlackListedLeaf == NULL && isCertificateBlackListed(certificate))
+    {
+        return 0; //hax
+    }
 	return SecCertificateIsValid(certificate, verifyTime);
 }
 
