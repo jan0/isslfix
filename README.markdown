@@ -3,10 +3,10 @@ iOS < 4.3.5 fix for SSL vulnerability (CVE-2011-0228)
 
 **Warning : backup your device before installing in case something goes wrong …**
 
-Deb package : https://github.com/downloads/jan0/isslfix/isslfix-test3.deb
+Deb package : https://github.com/downloads/jan0/isslfix/isslfix.deb
 
 ```
-dpkg -i isslfix-test3.deb
+dpkg -i isslfix.deb
 launchctl unload /System/Library/LaunchDaemons/com.apple.securityd.plist
 launchctl load /System/Library/LaunchDaemons/com.apple.securityd.plist
 ```

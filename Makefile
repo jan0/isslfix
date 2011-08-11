@@ -1,5 +1,5 @@
 CC=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/arm-apple-darwin10-gcc-4.2.1
-CFLAGS=-Wall -framework CoreFoundation -framework Security -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/ 
+CFLAGS=-O3 -Wall -framework CoreFoundation -framework Security -isysroot /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/ 
 
 all: isslfix.dylib extrainst_ prerm
 
