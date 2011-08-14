@@ -61,14 +61,23 @@ CFArrayRef mySecCertificateDataArrayCopyArray(CFArrayRef dataarray)
 {
 	CFArrayRef res = SecCertificateDataArrayCopyArray(dataarray);
 	int l = CFArrayGetCount(res);
+	if(l == 0)
+		return res;
 	int i=0;
-	for(i=0 ; i < l; i++)
+
+	//http://developer.apple.com/library/mac/documentation/Security/Reference/certifkeytrustservices/Reference/reference.html#//apple_ref/c/func/SecTrustCreateWithCertificates
+	//"The certificate to be verified must be the first in the array"
+	SecCertificateRefP leaf = (SecCertificateRefP) CFArrayGetValueAtIndex(res, 0);
+	
+	for(i=1 ; i < l; i++)
 	{
-		if(i != 0) //ignore the leaf certificate
-		{
 			SecCertificateRefP cert = (SecCertificateRefP) CFArrayGetValueAtIndex(res,i);
 			if(cert == NULL)
 				continue;
+			
+			if(leaf != NULL && CFEqual(leaf, cert)) //ignore when leaf cert appears multiple times
+				continue;
+			
 			const SecCEBasicConstraints* constraints = SecCertificateGetBasicConstraints(cert);
 			if(constraints == NULL)
 				continue;
@@ -79,7 +88,7 @@ CFArrayRef mySecCertificateDataArrayCopyArray(CFArrayRef dataarray)
 				{
 					CFSetAddValue(suspiciousCerts, cert);
 					CFStringRef desc = SecCertificateCopySubjectSummary(cert);
-					CFStringRef desc_leaf = SecCertificateCopySubjectSummary(CFArrayGetValueAtIndex(res,0));
+					CFStringRef desc_leaf = SecCertificateCopySubjectSummary(leaf);
 					if(desc != NULL)
 					{
 						CFStringGetCString(desc, buf1, 255, kCFStringEncodingASCII);
@@ -93,7 +102,6 @@ CFArrayRef mySecCertificateDataArrayCopyArray(CFArrayRef dataarray)
 					syslog(LOG_WARNING, "iSSLFix: Certificate <%s> in chain starting at <%s> has isCA=0 => possible MITM attempt, making validation fail", buf1, buf2);
 				}
 			}
-		}
 	}
 	return res;
 }
