@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "A REBOOT IS REQUIRED"
+
+
+declare -a cydia
+cydia=($CYDIA)
+
+if [[ ${CYDIA+@} ]]; then
+	eval "echo 'finish:reboot' >&${cydia[0]}"
+else
+	echo "Please REBOOT your device"
+
+fi
+
+exit 0
