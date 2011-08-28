@@ -1,9 +1,30 @@
 iOS < 4.3.5 fix for SSL vulnerability (CVE-2011-0228)
 =====================================================
 
-**Warning : backup your device before installing in case something goes wrong …**
+Deb packages
+============
 
-Deb package : https://github.com/downloads/jan0/isslfix/isslfix.deb
+https://github.com/jan0/issfix/downloads
+
+daa5c6efae5b36690153e715712e265e  isslfix_1.1.deb
+1.1 package on cydia (same as fix1)
+
+51560b2e1cc888f708c8c84c62be75a5  isslfix-fix1.deb
+test package for repeated leaf false positives fix
+
+eee21f50d677a1edd6b8700f045e60f7  isslfix_1.0.deb
+actual 1.0 cydia package in cydia
+
+df580a7179b24ca1dfdd637cbcdf8062  isslfix.deb
+version 1.0 submitted to cydia
+
+f22887c41bc9c663f6a181c2e8e9fd03  isslfix-test3.deb
+test version, without the comodo blacklist
+
+Testing
+=======
+
+**Warning : backup your device before installing in case something goes wrong …**
 
 ```
 dpkg -i isslfix.deb
