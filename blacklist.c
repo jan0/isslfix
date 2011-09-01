@@ -21,10 +21,10 @@ CFDataRef SecCertificateCopySerialNumber(SecCertificateRefP);
  * Added 247 blacklisted DigiNotar certificates, from
  * http://codereview.chromium.org/7791032/
  *
- * TODO: handle 0x00 leading certificate
+ * Added blacklisted DigiNotar certificate for *.google.com, from
+ * https://bugzilla.mozilla.org/show_bug.cgi?id=682956
  *
- * TODO: Chromium proposed patch only talks about non-Google sites, look for
- * missing certificates
+ * TODO: handle 0x00 leading certificate
  *
  * TODO: handle DigiNotar Root CA public key
  *
@@ -55,7 +55,7 @@ unsigned char issuer_blacklist[] = {
     0x41, 0x52, 0x44, 0x57, 0x41, 0x52, 0x45
 };
 
-#define NSERIALS    256
+#define NSERIALS    257
 #define SERIALSIZE  16
 unsigned char serial_blacklist[NSERIALS][SERIALSIZE]= {
     { 0xD8, 0xF3, 0x5F, 0x4E, 0xB7, 0x87, 0x2B, 0x2D,
@@ -84,6 +84,10 @@ unsigned char serial_blacklist[NSERIALS][SERIALSIZE]= {
     
     { 0xF5, 0xC8, 0x6A, 0xF3, 0x61, 0x62, 0xF1, 0x3A,
       0x64, 0xF5, 0x4F, 0x6D, 0xC9, 0x58, 0x7C, 0x06}
+
+    // Bad Diginotar leaf certificate for *.google.com
+    { 0x05, 0xE2, 0xE6, 0xA4, 0xCD, 0x09, 0xEA, 0x54,
+      0xD6, 0x65, 0xB0, 0x75, 0xFE, 0x22, 0xA2, 0x56}
 
     // Bad DigiNotar leaf certificates for non-Google sites.
     { 0x95, 0x32, 0x18, 0xB7, 0x04, 0xCC, 0x62, 0xB2,
