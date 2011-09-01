@@ -24,8 +24,6 @@ CFDataRef SecCertificateCopySerialNumber(SecCertificateRefP);
  * Added blacklisted DigiNotar certificate for *.google.com, from
  * https://bugzilla.mozilla.org/show_bug.cgi?id=682956
  *
- * TODO: handle 0x00 leading certificate
- *
  * TODO: handle DigiNotar Root CA public key
  *
  * TODO: handle DigiNotar Cyber CA public key
@@ -55,7 +53,7 @@ unsigned char issuer_blacklist[] = {
     0x41, 0x52, 0x44, 0x57, 0x41, 0x52, 0x45
 };
 
-#define NSERIALS    257
+#define NSERIALS    256
 #define SERIALSIZE  16
 unsigned char serial_blacklist[NSERIALS][SERIALSIZE]= {
     { 0xD8, 0xF3, 0x5F, 0x4E, 0xB7, 0x87, 0x2B, 0x2D,
@@ -549,11 +547,6 @@ unsigned char serial_blacklist[NSERIALS][SERIALSIZE]= {
     { 0x24, 0x70, 0x94, 0xDE, 0x01, 0x5A, 0xB4, 0xD7,
       0x66, 0xE2, 0x09, 0x1E, 0x4D, 0x28, 0xFD, 0xDE},
 
-    // Leaf beginnning with a leading 0x00, Chromium sources handle this as a
-    // special case.
-    { 0x00, 0x17, 0x7F, 0xB6, 0x53, 0x6B, 0x98, 0xCE,
-      0x40, 0xD5, 0x4B, 0x8B, 0x24, 0xE3, 0x16, 0x05},
-
     { 0x90, 0x5D, 0x96, 0x0B, 0xB9, 0x2A, 0x4E, 0x49,
       0xD9, 0xDA, 0xB2, 0xBA, 0x00, 0x85, 0x0E, 0x3E},
 
@@ -835,6 +828,12 @@ unsigned char serial_blacklist[NSERIALS][SERIALSIZE]= {
     // End of bad DigiNotar leaf certificates for non-Google sites.
 };
 
+// Special case for DigiNotar: this serial number had a leading 0x00 byte
+unsigned char serial_blacklist_DigiNotar_leading_zero[SERIALSIZE - 1]= {
+    0x17, 0x7F, 0xB6, 0x53, 0x6B, 0x98, 0xCE, 0x40,
+    0xD5, 0x4B, 0x8B, 0x24, 0xE3, 0x16, 0x05
+};
+
 int isCertificateBlackListed(SecCertificateRefP cert)
 {
     int i;
@@ -863,7 +862,7 @@ int isCertificateBlackListed(SecCertificateRefP cert)
         sl--;
     }
     
-    if (sl == 16)
+    if (sl == SERIALSIZE)
     {
         for(i=0; i < NSERIALS; i++)
         {
@@ -874,6 +873,15 @@ int isCertificateBlackListed(SecCertificateRefP cert)
                 CFRelease(serial);
                 return 1;
             }
+        }
+    }
+    if (sl == SERIALSIZE - 1)
+    {
+        if(!memcmp(p, serial_blacklist_DigiNotar_leading_zero, SERIALSIZE - 1))
+        {
+            syslog(LOG_WARNING, "iSSLFix: blocking blacklisted certificate");
+            CFRelease(serial);
+            return 1;
         }
     }
     CFRelease(serial);
