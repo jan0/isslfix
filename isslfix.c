@@ -32,14 +32,27 @@ CFMutableSetRef suspiciousCerts = NULL;
 //this symbol was introduced in iOS 4.3.2
 __attribute__((weak_import)) extern void* kSecPolicyCheckBlackListedLeaf;
 
+CF_EXPORT const CFStringRef _kCFSystemVersionProductVersionKey;
+
+int before435 = 1;
 
 void __attribute__((constructor)) init(){
+	CFDictionaryRef versionDict = _CFCopySystemVersionDictionary();
+	if (versionDict != NULL)
+	{
+		CFStringRef version = CFDictionaryGetValue(versionDict, _kCFSystemVersionProductVersionKey);
+		if (version != NULL)
+		{
+			before435 =  (CFStringCompare(version, CFSTR("4.3.5"), 0) == -1);
+		}
+		
+	}
 	suspiciousCerts = CFSetCreateMutable(kCFAllocatorDefault, 0, &kCFTypeSetCallBacks);
 }
 
 bool mySecCertificateIsValid(SecCertificateRefP certificate, CFAbsoluteTime verifyTime)
 {
-	if(suspiciousCerts != NULL && CFSetContainsValue(suspiciousCerts, certificate))
+	if(before435 && suspiciousCerts != NULL && CFSetContainsValue(suspiciousCerts, certificate))
 	{
 		return 0; //hax
 	}
@@ -60,6 +73,10 @@ anchors are trusted certificates provided by the caller (if any), we should not 
 CFArrayRef mySecCertificateDataArrayCopyArray(CFArrayRef dataarray)
 {
 	CFArrayRef res = SecCertificateDataArrayCopyArray(dataarray);
+
+	if(!before435)	//no check if >= 4.3.5
+		return res;
+
 	int l = CFArrayGetCount(res);
 	if(l == 0)
 		return res;
