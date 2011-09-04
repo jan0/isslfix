@@ -1,6 +1,15 @@
 iOS < 4.3.5 fix for SSL vulnerability (CVE-2011-0228)
 =====================================================
 
+Changelog
+=========
+
+* v1.2 : DigiNotar blacklist
+
+* v1.1 : fix repeated leaf false positives bug
+
+* v1.0 : initial release
+
 Deb packages
 ============
 
@@ -24,7 +33,7 @@ test version, without the comodo blacklist
 Testing
 =======
 
-**Warning : backup your device before installing in case something goes wrong …**
+**Warning : backup your device before installing in case something goes wrong ...**
 
 ```
 dpkg -i isslfix.deb
@@ -49,8 +58,20 @@ Because securityd is restarted, existing processes and daemons will lose their "
 Comodo stolen certificates blacklist
 ====================================
 
-For devices with older firmwares, the blacklist added in iOS 4.3.2 is replicated (see blacklist.c).
+For devices with older firmwares, the blacklist added in iOS 4.3.2 is replicated (see blacklist.c and comodo.h).
 
+DigiNotar CAs blacklist
+====================================
+
+The public keys for the following certificates are blacklisted in v1.2
+
+* DigiNotar Root CA (88 68 bf e0 8e 35 c4 3b 38 6b 62 f7 28 3b 84 81 c8 0c d7 4d)
+
+* DigiNotar Cyber CA (ab f9 68 df cf 4a 37 d7 7b 45 8c 5f 72 de 40 44 c3 65 bb c2)
+
+* DigiNotar Services 1024 CA (fe dc 94 49 0c 6f ef 5c 7f c6 f1 12 99 4f 16 49 ad fb 82 65)
+
+* DigiNotar PKIoverheid CA Organisatie - G2 (bc 5d 94 3b d9 ab 7b 03 25 73 61 c2 db 2d ee fc ab 8f 65 a1)
 
 References
 ==========
@@ -72,4 +93,10 @@ http://www.comodo.com/Comodo-Fraud-Incident-2011-03-23.html
 https://bugzilla.mozilla.org/show_bug.cgi?id=643056
 
 http://hg.mozilla.org/mozilla-central/rev/f6215eef2276
+
+http://codereview.chromium.org/7791032/
+
+https://bugzilla.mozilla.org/show_bug.cgi?id=682927
+
+http://blog.mozilla.com/security/2011/09/02/diginotar-removal-follow-up/
 

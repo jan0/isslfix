@@ -1,9 +1,9 @@
 Name: isslfix
 Package: isslfix
 Priority: optional
-Version: 1.1
+Version: 1.2
 Architecture: iphoneos-arm
-Description: fixes iOS SSL vulnerability CVE-2011-0228
+Description: fixes iOS SSL vulnerability CVE-2011-0228 + certificate blacklist
 Homepage: http://moreinfo.thebigboss.org/moreinfo/depiction.php?file=isslfixData
 Depiction: http://moreinfo.thebigboss.org/moreinfo/depiction.php?file=isslfixData
 Sponsor: thebigboss.org <http://thebigboss.org>
