@@ -57,10 +57,13 @@ bool mySecCertificateIsValid(SecCertificateRefP certificate, CFAbsoluteTime veri
 		return 0; //hax
 	}
     //if < 4.3.2 then do our own check for Comodo certs
-    if(&kSecPolicyCheckBlackListedLeaf == NULL && isCertificateBlackListed(certificate))
+    if(&kSecPolicyCheckBlackListedLeaf == NULL && check_comodo_blacklist(certificate))
     {
         return 0; //hax
     }
+    if(check_diginotar_blacklist(certificate))
+		return 0;
+
 	return SecCertificateIsValid(certificate, verifyTime);
 }
 
