@@ -73,6 +73,9 @@ The public keys for the following certificates are blacklisted in v1.2
 
 * DigiNotar PKIoverheid CA Organisatie - G2 (bc 5d 94 3b d9 ab 7b 03 25 73 61 c2 db 2d ee fc ab 8f 65 a1)
 
+* DigiNotar Root CA G2 (29 0d db 3f 07 52 e5 0b d4 21 68 2e 24 4a de 5b 5a 96 f2 21)
+
+
 References
 ==========
 
