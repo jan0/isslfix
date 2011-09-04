@@ -32,7 +32,11 @@ CFMutableSetRef suspiciousCerts = NULL;
 //this symbol was introduced in iOS 4.3.2
 __attribute__((weak_import)) extern void* kSecPolicyCheckBlackListedLeaf;
 
+int check_comodo_blacklist(SecCertificateRefP cert);
+int check_diginotar_blacklist(SecCertificateRefP cert);
+
 CF_EXPORT const CFStringRef _kCFSystemVersionProductVersionKey;
+CF_EXPORT CFDictionaryRef _CFCopySystemVersionDictionary(void);
 
 int before435 = 1;
 

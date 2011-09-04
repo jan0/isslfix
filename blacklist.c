@@ -7,6 +7,7 @@
 #define SecCertificateRefP void*	//moo
 CFDataRef SecCertificateGetNormalizedIssuerContent(SecCertificateRefP);
 CFDataRef SecCertificateCopySerialNumber(SecCertificateRefP);
+CFDataRef SecCertificateCopyPublicKeySHA1Digest(SecCertificateRefP certificate);
 
 /**
  * Add check for blacklisted Comodo certificates for iOS < 4.3.2
@@ -41,7 +42,7 @@ int check_comodo_blacklist(SecCertificateRefP cert)
     const UInt8* p = CFDataGetBytePtr(serial);
     
     if( p == NULL)
-        return 0
+        return 0;
 
     //skip leading null bytes 
     while(sl > 0 && *p == 0)
