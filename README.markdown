@@ -13,7 +13,10 @@ Changelog
 Deb packages
 ============
 
-https://github.com/jan0/issfix/downloads
+https://github.com/jan0/isslfix/downloads
+
+83aa7a01f4377d3e5ec2e1af9c99602a  isslfix_1.2.deb
+1.2 cydia package
 
 daa5c6efae5b36690153e715712e265e  isslfix_1.1.deb
 1.1 package on cydia (same as fix1)
